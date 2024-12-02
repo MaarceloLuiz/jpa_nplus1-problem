@@ -10,6 +10,9 @@ import com.example.demo.dto.ProductDTO;
 import com.example.demo.entities.Product;
 import com.example.demo.repositories.ProductRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ProductService {
 	
@@ -17,8 +20,8 @@ public class ProductService {
 	private ProductRepository repository;
 
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> find(PageRequest pageRequest) {
-		Page<Product> list = repository.findAll(pageRequest);
-		return list.map(x -> new ProductDTO(x));
+	public List<ProductDTO> find(PageRequest pageRequest) {
+		List<Product> list = repository.findProductsCategories();
+		return list.stream().map(ProductDTO::new).collect(Collectors.toList());
 	}
 }

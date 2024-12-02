@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.ProductDTO;
 import com.example.demo.service.ProductService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/products")
 public class ProductResource {
@@ -20,13 +22,13 @@ public class ProductResource {
 	private ProductService service;
 	
 	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAll(
+	public ResponseEntity<List<ProductDTO>> findAll(
 			@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "size", defaultValue = "10") Integer size
 			) {
 		
 		PageRequest pageRequest = PageRequest.of(page, size);
-		Page<ProductDTO> list = service.find(pageRequest);
+		List<ProductDTO> list = service.find(pageRequest);
 		return ResponseEntity.ok(list);
 	}
 }
