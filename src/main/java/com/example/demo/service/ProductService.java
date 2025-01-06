@@ -1,17 +1,13 @@
 package com.example.demo.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.demo.dto.ProductDTO;
 import com.example.demo.entities.Product;
 import com.example.demo.repositories.ProductRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ProductService {
@@ -20,11 +16,8 @@ public class ProductService {
 	private ProductRepository repository;
 
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> find(PageRequest pageRequest) {
-		Page<Product> page = repository.findAll(pageRequest);
-		// keeping in memory the object's identity
-		repository.findProductsCategories(page.stream().collect(Collectors.toList()));
-
+	public Page<ProductDTO> find(Pageable pageable) {
+		Page<Product> page = repository.findProductsCategories(pageable);
 		return page.map(ProductDTO::new);
 	}
 }
